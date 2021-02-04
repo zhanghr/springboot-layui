@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+<generatorConfiguration>
+	<context id="Mysql" targetRuntime="MyBatis3Simple"
+		defaultModelType="flat">
+       
+       
+       <property name="javaFileEncoding" value="UTF-8"/>
+
+
+      
+
+        <!-- https://blog.csdn.net/lyd258963/article/details/109118987 -->
+		<plugin type="tk.mybatis.mapper.generator.MapperPlugin">
+			<!-- <property name="mappers" value="tk.mybatis.mapper.common.Mapper" /> -->
+			<property name="mappers" value="tk.mapper.MyMapper" />
+			<!-- caseSensitive默认false，当数据库表名区分大小写时，可以将该属性设置为true -->
+			<property name="caseSensitive" value="true" />
+		</plugin>
+		
+		
+		<!-- 自动为entity生成swagger2文档-->
+        <plugin type="mybatis.generator.plugins.GeneratorSwagger2Doc">
+          <property name="apiModelAnnotationPackage" value="io.swagger.annotations.ApiModel" />
+          <property name="apiModelPropertyAnnotationPackage" value="io.swagger.annotations.ApiModelProperty" />
+        </plugin>
+		
+		
+		<!-- 扩展entity的set方法-->
+        <plugin type="mybatis.generator.plugins.ExtendEntitySetter" />
+        
+         <plugin type="com.itfsw.mybatis.generator.plugins.LombokPlugin">
+	        <!-- @Data 默认开启,同时插件会对子类自动附加@EqualsAndHashCode(callSuper = true)，@ToString(callSuper = true) -->
+	        <property name="@Data" value="true"/>
+	        <!-- @Builder 必须在 Lombok 版本 >= 1.18.2 的情况下开启，对存在继承关系的类自动替换成@SuperBuilder -->
+	        <property name="@Builder" value="false"/>
+	        <!-- @NoArgsConstructor 和 @AllArgsConstructor 使用规则和Lombok一致 -->
+	        <property name="@AllArgsConstructor" value="false"/>
+	        <property name="@NoArgsConstructor" value="false"/>
+	        <!-- @Getter、@Setter、@Accessors 等使用规则参见官方文档 -->
+	        <property name="@Accessors(chain = true)" value="false"/>
+	        <!-- 临时解决IDEA工具对@SuperBuilder的不支持问题，开启后(默认未开启)插件在遇到@SuperBuilder注解时会调用ModelBuilderPlugin来生成相应的builder代码 -->
+	        <property name="supportSuperBuilderForIdea" value="false"/>
+	    </plugin>
+       
+
+        <commentGenerator >
+           <!-- 是否去除自动生成的注释 true：是 ： false:否 -->
+			<property name="suppressAllComments" value="true" />
+			<property name="suppressDate" value="true"/>
+			<property name="javaFileEncoding" value="UTF-8"/>
+		</commentGenerator>
+		
+		<jdbcConnection driverClass="com.mysql.jdbc.Driver"
+						connectionURL="jdbc:mysql://114.67.80.0:33308/jijing?characterEncoding=UTF-8"
+						userId="root" password="zhanghr">
+		</jdbcConnection>
+
+
+		<javaModelGenerator targetPackage="com.haiyu.manager.dto"
+			targetProject="src/main/java" />
+
+		<sqlMapGenerator targetPackage="mapper"
+			targetProject="src/main/resources" />
+
+		<javaClientGenerator targetPackage="com.haiyu.manager.dao"
+			targetProject="src/main/java" type="XMLMAPPER" />
+
+
+		<table tableName="main_data">
+           <generatedKey column="id" sqlStatement="Mysql" identity="false"/>
+        </table>
+		
+		<!-- mybatis-generator:generate -->
+
+	</context>
+</generatorConfiguration>
